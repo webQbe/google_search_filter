@@ -5,6 +5,9 @@
 - Create a clean search interface
 - Using Google's API to create a custom search engine
 - Querying the search engine and store results with Python
+- Store results in a separate file so,
+    - We do not need to keep querying the API if we have already searched for something
+    - We're able to save search history data which can be used to build better filters
 - Writing filters to filter results and re-rank them to give custom ordering
 
 
