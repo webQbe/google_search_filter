@@ -88,3 +88,12 @@ class DBStorage():
 
         ''' Close connection cursor '''
         cur.close()
+
+    ''' Define query_results() takes query & returns all results from db '''
+    def query_results(self, query):
+         
+         ''' Run SQL query against db '''
+         df = pd.read_sql(f"select * from results where query='{query}' order by rank asc;", self.con)
+
+         ''' Return dataframe '''
+         return df
