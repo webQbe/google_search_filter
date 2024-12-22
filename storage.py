@@ -89,6 +89,8 @@ class DBStorage():
         ''' Close connection cursor '''
         cur.close()
 
+
+
     ''' Define query_results() takes query & returns all results from db '''
     def query_results(self, query):
          
@@ -97,3 +99,36 @@ class DBStorage():
 
          ''' Return dataframe '''
          return df
+
+
+    ''' Define insert_row() to store results to db '''
+    def insert_row(self, values):
+
+        cur = self.con.cursor()
+
+        try:
+            cur.execute('INSERT INTO results (query, rank, title, snippet, html, created) VALUES(?,?,?,?,?,?,?,?)', values)
+
+            ''' Execute the SQL Insert Command:
+                The SQL command inserts data into the results table.
+                    Column names: Specifies which columns to insert into.
+                    Placeholders (?): Prevent SQL injection by parameterizing inputs.
+
+                values: Contains the actual data to be inserted, matching the column order:
+                    query, rank, title, snippet, html, created.
+            
+            
+            '''
+
+            self.con.commit()
+
+        except sqlite3.IntegrityError:
+            pass
+
+            ''' Handle Unique Constraints:
+                Catches any sqlite3.IntegrityError that occurs if the UNIQUE(query, link) constraint is violated.
+                In such cases, the function silently ignores the error and does not insert the row.
+                This prevents duplicate entries for the same combination of query and link.
+        '''
+
+        cur.close()
