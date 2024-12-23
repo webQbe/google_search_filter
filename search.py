@@ -84,3 +84,51 @@ def scrape_page(links):
     ''' Return updated list'''
     return html
 
+
+''' Define search() to take query & 
+    check if we already searched for something & stored it to db.
+    If we did, it will return results from db, 
+    if we didn't it will query API, get new results, format, save to db and then return.
+'''
+def search(query):
+
+    ''' Pass columns into storage '''
+    columns = ["query", "rank", "link", "title", "snippet", "html", "created"] 
+
+    ''' Init storage class ''' 
+    storage = DBStorage()  
+
+    ''' Check if query has been run already '''
+    stored_results = storage.query_results()
+    ''' Skip if no results found '''
+    if stored_results.shape[0] > 0:
+        """ Return results from database """  
+        ''' Convert sqlite timestamps to pandas datetime objects '''
+        stored_results["created"] = pd.to_datetime(stored_results["created"])
+        return stored_results[columns]
+
+    ''' Find results with search_api(query) '''
+    results = search_api(query)
+
+    ''' Scrape html from pages and store in dataframe '''
+    results["html"] = scrape_page(results["link"])
+
+    ''' Remove results with empty html '''
+    results = results[results["html"].str.len() > 0].copy()
+
+    """ Assign columns """
+    results["query"] = query
+
+    ''' Convert to sqlite time format '''
+    results["created"] = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+
+    ''' Remove extra columns & put columns in right order '''
+    results = results[columns]
+
+    ''' Iterate over results df & use insert_row() to insert each row into db '''
+    results.apply(lambda x: storage.insert_row(x), axis=1)
+
+    return results
+
+
+
