@@ -4,11 +4,11 @@ from requests.exceptions import RequestException
 import pandas as pd
 from storage import DBStorage
 from urllib.parse import quote_plus
+from datetime import datetime
 
 ''' Define search_api() to connect API endpoint & 
     return search results 
     Each page contains 10 results '''
-
 def search_api(query, pages=int(RESULT_COUNT/10)):
 
     results = []
@@ -27,6 +27,9 @@ def search_api(query, pages=int(RESULT_COUNT/10)):
             query = quote_plus(query),
             start = start
         )
+
+        ''' Check formatted url '''
+        print(url)
 
         ''' Make a request to google custom search api '''
         response = requests.get(url)
@@ -57,5 +60,27 @@ def search_api(query, pages=int(RESULT_COUNT/10)):
     return res_df
 
 
-     
+''' Define scrape_page() that takes in a list of links & 
+    returns full html of pages '''
+def scrape_page(links):
+
+    html = []
+
+    ''' Iterate through links list '''
+    for link in links:
+
+        try:
+            ''' Download page html '''
+            data = requests.get(link, timeout=5)
+
+            ''' Append text from data to html list '''
+            html.append(data.text)
+
+        except RequestException:
+            ''' When html can't be downloaded properly,
+              assume html is empty '''
+            html.append("")
+
+    ''' Return updated list'''
+    return html
 
