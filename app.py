@@ -5,6 +5,10 @@ import html # To render html
 # Init Flask app
 app = Flask(__name__)
 
+def run_search(query):
+    results = search(query)
+    rendered = search_template
+
 # Create a new route (127.0.0.1:5001)
 # for GET & POST requests 
 @app.route("/", methods=["GET", "POST"]) # URL on web server 
