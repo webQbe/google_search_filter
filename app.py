@@ -13,6 +13,10 @@ search_template = """
     </form>
 """
 
+def show_search_form():
+    return search_template
+
+
 def run_search(query):
     results = search(query)
     rendered = search_template
