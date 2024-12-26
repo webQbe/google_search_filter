@@ -1,12 +1,31 @@
 from flask import Flask, request
-from search import search # Import Search() we created
-import html # To render html
+# Import Search() we created
+from search import search
+# To render html
+import html 
 
 # Init Flask app
 app = Flask(__name__)
 
+# Add CSS
+styles = """
+    <style>
+    .site {
+        font-size: .8rem;
+        color: green;
+    }
+
+    .snippet {
+        font-size: 0.9rem;
+        color: gray;
+        margin-bottom: 30px;
+    }
+    </style>
+"""
+
+
 # Search Form
-search_template = """
+search_template = styles + """
     <form action="/" method="post">
         <input type="text" name="query">
         <input type="submit" value="Search">
@@ -27,7 +46,7 @@ def show_search_form():
 def run_search(query):
     results = search(query)
     rendered = search_template
-    
+
     # Avoid rendering html included in snippets
     results["snippet"] = results["snippet"].apply(lambda x: html.escape(x))
 
@@ -47,6 +66,7 @@ def run_search(query):
 # Create a new route (127.0.0.1:5001)
 # for GET & POST requests 
 @app.route("/", methods=["GET", "POST"]) # URL on web server 
+ # Run server with  'flask --debug run --port 5001'
 def search_form():
     # Search for something if it's a POST request
     if request.method == "POST":
