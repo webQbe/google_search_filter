@@ -5,6 +5,14 @@ import html # To render html
 # Init Flask app
 app = Flask(__name__)
 
+# Search Form
+search_template = """
+    <form action="/" method="post">
+        <input type="text" name="query">
+        <input type="submit" value="Search">
+    </form>
+"""
+
 def run_search(query):
     results = search(query)
     rendered = search_template
