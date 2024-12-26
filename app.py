@@ -13,6 +13,13 @@ search_template = """
     </form>
 """
 
+# Search Result
+result_template = """
+    <p class="site">{rank}: {link}</p>
+    <a href="{link}">{title}</a>
+    <p class="snippet">{snippet}</p>
+"""
+
 def show_search_form():
     return search_template
 
