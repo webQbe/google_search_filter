@@ -107,7 +107,7 @@ class DBStorage():
         cur = self.con.cursor()
 
         try:
-            cur.execute('INSERT INTO results (query, rank, title, snippet, html, created) VALUES(?,?,?,?,?,?,?,?)', values)
+            cur.execute('INSERT INTO results (query, rank, link, title, snippet, html, created) VALUES(?,?,?,?,?,?,?)', values)
 
             ''' Execute the SQL Insert Command:
                 The SQL command inserts data into the results table.

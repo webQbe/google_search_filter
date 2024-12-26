@@ -99,7 +99,7 @@ def search(query):
     storage = DBStorage()  
 
     ''' Check if query has been run already '''
-    stored_results = storage.query_results()
+    stored_results = storage.query_results(query)
     ''' Skip if no results found '''
     if stored_results.shape[0] > 0:
         """ Return results from database """  
