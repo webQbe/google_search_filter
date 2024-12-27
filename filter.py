@@ -29,7 +29,7 @@ class Filter():
         page_content = self.filtered.apply(get_page_content, axis=1)
 
         # Split extracted text (x) into words & calculate word count
-        word_count = page_content.apply(lambda x: len(x.split("")))
+        word_count = page_content.apply(lambda x: len(x.split(" ")))
 
         # Normalize word count by 
         # dividing it by the median word count across all results.
