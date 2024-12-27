@@ -3,6 +3,11 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from settings import *
 
+# Get text inside html
+def get_page_content(row):
+    soup = BeautifulSoup(row["html"])
+    text = soup.get_text()
+    return text
 
 # Create Filter class
 class Filter():
