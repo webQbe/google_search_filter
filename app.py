@@ -10,16 +10,16 @@ app = Flask(__name__)
 # Add CSS
 styles = """
     <style>
-    .site {
-        font-size: .8rem;
-        color: green;
-    }
+        .site {
+            font-size: .8rem;
+            color: green;
+        }
 
-    .snippet {
-        font-size: 0.9rem;
-        color: gray;
-        margin-bottom: 30px;
-    }
+        .snippet {
+            font-size: 0.9rem;
+            color: gray;
+            margin-bottom: 30px;
+        }
     </style>
 """
 
@@ -52,7 +52,8 @@ def run_search(query):
 
     # Iterate across rows in results
     for index, row in results.iterrows():
-        rendered += result_template.format(**row) # Append to rendered
+        # Append to rendered
+        rendered += result_template.format(**row) 
         ''' Pass current row of data to the template, 
              so placeholder text in html will be replaced.
         '''
