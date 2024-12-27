@@ -27,7 +27,7 @@ class Filter():
     def content_filter(self):
         # Apply get_page_content() to each row of filtered df  
         page_content = self.filtered.apply(get_page_content, axis=1)
-        
+
         # Split extracted text (x) into words & calculate word count
         word_count = page_content.apply(lambda x: len(x.split("")))
 
@@ -46,4 +46,11 @@ class Filter():
         # Modify the existing rank column in the filtered DataFrame by adding the adjusted word count values.
         self.filtered["rank"] += word_count
 
-
+    def filter(self):
+        # Adjust rank column in the filtered DataFrame based on the word count
+        self.content_filter()
+        # Sort filtered DataFrame by the rank column in ascending order
+        self.filtered = self.filtered.sort_values("rank", ascending=True)
+        # Rounds the rank column to the nearest integer
+        self.filtered["rank"] = self.filtered["rank"].round()
+        return self.filtered
