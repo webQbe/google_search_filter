@@ -1,8 +1,8 @@
 from flask import Flask, request
-# Import Search() we created
-from search import search
-# To render html
-import html 
+from search import search # Import Search() we created
+import html # To render html
+from filter import Filter # Import filter class
+
 
 # Init Flask app
 app = Flask(__name__)
@@ -45,6 +45,9 @@ def show_search_form():
 
 def run_search(query):
     results = search(query)
+    fi = Filter(results) # Init Filter
+    results = fi.filter() # Re-rank results
+
     rendered = search_template
 
     # Avoid rendering html included in snippets
