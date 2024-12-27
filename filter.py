@@ -14,3 +14,8 @@ class Filter():
             The self.filtered attribute stores this copied data.
             This ensures that self.filtered is an independent copy of results. Modifications to self.filtered won't affect the original results object passed to the constructor, and vice versa.
         '''
+
+    # Setup Content Filter
+    def content_filter(self):
+        # Apply get_page_content() to each row of filtered df  
+        page_content = self.filtered.apply(get_page_content, axis=1)
