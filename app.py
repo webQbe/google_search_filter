@@ -28,6 +28,24 @@ head = """
             color: blue;
         }
     </style>
+    <script>
+
+        // Define relevant() function, which sends a POST request to the /relevant endpoint with the search query and link as a JSON payload.
+
+        const relevant = function(query, link){
+            fetch("/relevant", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "query" : query,
+                    "link" : link,
+                })
+            });
+        }
+    </script>
 """
 
 
