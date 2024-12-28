@@ -80,6 +80,19 @@ class Filter():
         # Modify the existing rank column in the filtered DataFrame by adding the adjusted word count values.
         self.filtered["rank"] += word_count
 
+    # Adjust Ranking Based on Trackers
+    def tracker_filter(self):
+        # Get tracker_count for every result
+        tracker_count = self.filtered.apply(tracker_urls, axis=1)
+
+        # Compare tracker_count to its median value.
+        # Assign a high penalty, if a row's tracker count is above median
+        tracker_count[tracker_count > tracker_count.median()] = RESULT_COUNT * 2 
+
+        # Update Ranking
+        # Adds tracker_count to rank column of the filtered DataFrame
+        self.filtered["rank"] += tracker_count
+
     def filter(self):
         # Adjust rank column in the filtered DataFrame based on the word count
         self.content_filter()
