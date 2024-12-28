@@ -107,4 +107,20 @@ def search_form():
         return run_search(query)
     else:
         return show_search_form()
+    
+    
+# Endpoint for /relevant
+@app.route("/relevant", methods=["POST"])
+def mark_relevant():
+    # Extract query and link from the JSON payload
+    data = request.get_json()
+    query = data["query"]
+    link = data["link"]
+    # Init a new instance of the DBStorage class
+    storage = DBStorage() 
+    # Set relevance score of the query and link to 10
+    storage.update_relevance(query, link, 10)
+    # Responds with a JSON object indicating success
+    return jsonify(success=True)
+
 
