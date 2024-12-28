@@ -96,6 +96,8 @@ class Filter():
     def filter(self):
         # Adjust rank column in the filtered DataFrame based on the word count
         self.content_filter()
+        # Adjust rank based on tracker count
+        self.tracker_filter()
         # Sort filtered DataFrame by the rank column in ascending order
         self.filtered = self.filtered.sort_values("rank", ascending=True)
         # Rounds the rank column to the nearest integer
