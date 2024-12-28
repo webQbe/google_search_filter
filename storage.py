@@ -132,3 +132,12 @@ class DBStorage():
         '''
 
         cur.close()
+
+    # Update relevance of a specific result in the database
+    def update_relevance(self, query, link, relevance):
+        cur = self.con.cursor()
+        # Executes an SQL UPDATE query to 
+        # modify the relevance column for the matching query and link.
+        cur.execute("UPDATE results SET relevance =? WHERE query=? AND link=?", [relevance, query, link])
+        self.con.commit()
+        cur.close()
