@@ -1,15 +1,17 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from search import search # Import Search() we created
 import html # To render html
 from filter import Filter # Import filter class
+from storage import DBStorage 
 
 
 # Init Flask app
 app = Flask(__name__)
 
-# Add CSS
-styles = """
+
+head = """
     <style>
+        /* Style the search results */
         .site {
             font-size: .8rem;
             color: green;
@@ -20,21 +22,32 @@ styles = """
             color: gray;
             margin-bottom: 30px;
         }
+
+        .rel-button {
+            cursor: pointer;
+            color: blue;
+        }
     </style>
 """
 
 
 # Search Form
-search_template = styles + """
+search_template = head + """
     <form action="/" method="post">
         <input type="text" name="query">
         <input type="submit" value="Search">
     </form>
 """
 
-# Search Result
-result_template = """
-    <p class="site">{rank}: {link}</p>
+# Generate HTML for each search result
+result_template =  """
+    <!-- onclick attribute calls the relevant() function with 
+         the corresponding query and link. -->
+    <p class="site">{rank}: {link} 
+        <span class="rel-button" 
+                onclick='relevant("{query}", "{link}");'>Relevant
+        </span>
+    </p>
     <a href="{link}">{title}</a>
     <p class="snippet">{snippet}</p>
 """
@@ -64,9 +77,6 @@ def run_search(query):
     return rendered
 
 
-
-
-
 # Create a new route (127.0.0.1:5001)
 # for GET & POST requests 
 @app.route("/", methods=["GET", "POST"]) # URL on web server 
@@ -79,8 +89,4 @@ def search_form():
         return run_search(query)
     else:
         return show_search_form()
-    
-
-
-
 
