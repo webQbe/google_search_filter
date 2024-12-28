@@ -45,3 +45,14 @@
 
 6. Check installed packages : `pip list`
 7. Test your setup by creating and running `setup.py` file
+
+
+## Terminal Commands
+
+- Run Flask server:  `flask --debug run --port 5001`
+- Run SQL queries:
+    1. Open a new terminal
+    2. Run `sqlite3 links.db`
+    3. Select records in which relevance is marked: 
+        `select query, link, relevance from results where relevance is not null;`
+
