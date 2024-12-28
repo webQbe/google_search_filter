@@ -16,6 +16,36 @@ def get_page_content(row):
     text = soup.get_text()
     return text
 
+# Identify and Count Bad Domains
+def tracker_urls(row):
+    # A row of data, including an html field containing the page's HTML content.
+    soup = BeautifulSoup(row["html"])
+
+    # Extract Script Sources
+    # Find all <script> tags with a src attribute (ext JavaScript files)
+    scripts = soup.find_all("script",  {"src": True})
+    # Extract src attribute (URLs pointing to the scripts).
+    srcs = [s.get("src") for s in scripts]
+
+    # Extract Links
+    # Find all <a> tags with an href attribute (hyperlinks).
+    links = soup.find_all("a", {"href":True})
+    # Extract href attribute (URLs for links)
+    href = [l.get("href") for l in links] 
+
+    # Parse Domains
+    # Combine src and href URLs
+    # Use urlparse() to extract hostname (domain name) from each URL
+    all_domains = [urlparse(s).hostname for s in srcs + href]
+
+    # Match Against Blacklist
+    # Check if each domain is in the bad_domain_list
+    bad_domains = [a for a in all_domains if a in bad_domain_list]
+
+    # Return tracker_count
+    return len(bad_domains)
+    
+
 # Create Filter class
 class Filter():
     # Pass list of results
