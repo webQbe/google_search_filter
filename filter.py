@@ -4,6 +4,10 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from settings import *
 
+# Read the Blacklist
+with open("blacklist.txt") as f:
+    bad_domain_list = set(f.read().split("\n"))
+
 # Get text inside html
 def get_page_content(row):
     # Parse the HTML content in the "html" column.
